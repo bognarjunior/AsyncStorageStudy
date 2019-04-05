@@ -9,7 +9,7 @@ export default class App extends Component {
       <View style={styles.container}>
         <View style={styles.chooseNotification}>
           <Text style={styles.labelNotification}>Receber notificações</Text>
-          <Toggle style={{ flex: 1}} />
+          <Toggle style={{ flex: 1}} value={true} />
         </View>
       </View>
     );
