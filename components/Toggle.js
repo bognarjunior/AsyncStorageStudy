@@ -4,7 +4,7 @@ import { Text, View, StyleSheet } from 'react-native'
 export default class Toggle extends Component {
   render() {
     return (
-      <View style={styles.container}>
+      <View style={[styles.container, this.props.style]}>
 				<View style={[styles.viewNot, styles.viewToggle]}>
 					<Text style={styles.activeLabel}> Não </Text>
 				</View>
@@ -32,6 +32,9 @@ const styles = StyleSheet.create({
 		backgroundColor: '#ff0055',
 	},
 	viewToggle: {
+		alignItems: 'center',
+		justifyContent: 'center',
+		flex: 1,
 		padding: 4,
 	}
 })

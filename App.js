@@ -7,8 +7,10 @@ export default class App extends Component {
   render() {
     return (
       <View style={styles.container}>
-        <Text>Receber notificações</Text>
-        <Toggle />
+        <View style={styles.chooseNotification}>
+          <Text style={styles.labelNotification}>Receber notificações</Text>
+          <Toggle style={{ flex: 1}} />
+        </View>
       </View>
     );
   }
@@ -18,7 +20,16 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     paddingTop: 20,
-    paddingLeft: 10,
+    paddingHorizontal: 10,
     backgroundColor: '#F5FCFF',
+  },
+  chooseNotification: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+  },
+  labelNotification: {
+    fontSize: 20,
+    flex: 3
   }
 });
