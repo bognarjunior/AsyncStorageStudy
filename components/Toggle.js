@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Text, View, StyleSheet } from 'react-native'
+import { Text, View, StyleSheet, TouchableOpacity } from 'react-native'
 
 export default class Toggle extends Component {
   render() {
@@ -18,14 +18,17 @@ export default class Toggle extends Component {
 		const labelNot = !this.props.value ? styles.activeLabel : styles.inactiveLabel;
 
     return (
-      <View style={[styles.container, this.props.style]}>
+			<TouchableOpacity
+				style={[styles.container, this.props.style]}
+				onPress={this.props.onToggle}
+			>
 				<View style={activeNot}>
 					<Text style={labelNot}> Não </Text>
 				</View>
 				<View style={activeYes}>
 					<Text style={labelYes}> Sim </Text>
 				</View>
-      </View>
+      </TouchableOpacity>
     )
   }
 }
@@ -34,6 +37,7 @@ const styles = StyleSheet.create({
 	container: {
 		flexDirection: 'row',
 		borderWidth: 1,
+		borderRadius: 5,
     backgroundColor: '#d1d1e0',
 	},
   activeLabel: {

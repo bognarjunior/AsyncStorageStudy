@@ -4,12 +4,29 @@ import Toggle from './components/Toggle';
 
 
 export default class App extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      notifications: true
+    }
+  }
+
+  onToggleNotifications = () => {
+    this.setState({
+      notifications: !this.state.notifications
+    })
+  }
+
   render() {
     return (
       <View style={styles.container}>
         <View style={styles.chooseNotification}>
           <Text style={styles.labelNotification}>Receber notificações</Text>
-          <Toggle style={{ flex: 1}} value={true} />
+          <Toggle 
+            style={{ flex: 1}} 
+            value={this.state.notifications} 
+            onToggle={this.onToggleNotifications}
+          />
         </View>
       </View>
     );
