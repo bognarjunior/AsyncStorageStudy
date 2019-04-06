@@ -17,16 +17,21 @@ export default class App extends Component {
   componentDidMount() {
     
     setTimeout(() => {
-      
-      fetchConfiguration('notifications')
-      .then(value => {
-        console.log('value', value)
-        if (value !== null) {
-          this.setState({
-            notifications: value === 'true',
-            loading: false
-          })
+      Promise.all([
+        fetchConfiguration('notifications'),
+        fetchConfiguration('theme')
+      ])
+      .then(values => {
+        const state = { loading: false };
+        if (values[0] !== null) {
+          state.notifications = values[0] === 'true'
         }
+
+        if (values[1] !== null) {
+          state.theme = values[1]
+        }
+        
+        this.setState(state)
       })
     }, 3000);
   }
@@ -34,6 +39,9 @@ export default class App extends Component {
   componentDidUpdate(prevProps, prevState) {
     if (prevState.notifications !== this.state.notifications) {
       saveConfiguration('notifications', this.state.notifications.toString());
+    }
+    if (prevState.theme !== this.state.theme) {
+      saveConfiguration('theme', this.state.theme);
     }
   }
 
