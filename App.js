@@ -1,6 +1,7 @@
 import React, {Component} from 'react';
-import {StyleSheet, Text, View, Picker} from 'react-native';
+import {StyleSheet, Text, View, Picker, ActivityIndicator} from 'react-native';
 import Toggle from './components/Toggle';
+import { saveConfiguration, fetchConfiguration } from './storage';
 
 
 export default class App extends Component {
@@ -8,8 +9,26 @@ export default class App extends Component {
     super(props);
     this.state = {
       notifications: true,
-      theme: 'pink'
+      theme: 'pink',
+      loading: true
     }
+  }
+
+  componentDidMount() {
+    
+    setTimeout(() => {
+      
+      fetchConfiguration('notifications')
+      .then(value => {
+        console.log('value', value)
+        if (value !== null) {
+          this.setState({
+            notifications: value === 'true',
+            loading: false
+          })
+        }
+      })
+    }, 3000);
   }
 
   componentDidUpdate(prevProps, prevState) {
@@ -33,6 +52,7 @@ export default class App extends Component {
   render() {
     return (
       <View style={styles.container}>
+        
         <View style={styles.chooseNotification}>
           <Text style={styles.labelNotification}>Receber notificações</Text>
           <Toggle 
@@ -52,6 +72,11 @@ export default class App extends Component {
             <Picker.Item label="Verde" value="green" />
           </Picker>
         </View>
+       {this.state.loading && <ActivityIndicator 
+          style={styles.loading} 
+          size="large" 
+          color="#0000ff"
+        />}
       </View>
     );
   }
@@ -82,5 +107,9 @@ const styles = StyleSheet.create({
   labelPicker: {
     fontSize: 20,
     flex: 1
+  },
+  loading: {
+    ...StyleSheet.absoluteFillObject,
+    backgroundColor: 'rgba(0, 0, 0, .4)'
   }
 });
