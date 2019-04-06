@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {StyleSheet, Text, View} from 'react-native';
+import {StyleSheet, Text, View, Picker} from 'react-native';
 import Toggle from './components/Toggle';
 
 
@@ -7,13 +7,26 @@ export default class App extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      notifications: true
+      notifications: true,
+      theme: 'pink'
+    }
+  }
+
+  componentDidUpdate(prevProps, prevState) {
+    if (prevState.notifications !== this.state.notifications) {
+      saveConfiguration('notifications', this.state.notifications.toString());
     }
   }
 
   onToggleNotifications = () => {
     this.setState({
       notifications: !this.state.notifications
+    })
+  };
+
+  onThemeChange = (value) => {
+    this.setState({
+      theme: value
     })
   }
 
@@ -27,6 +40,17 @@ export default class App extends Component {
             value={this.state.notifications} 
             onToggle={this.onToggleNotifications}
           />
+        </View>
+        <View style={styles.choosePicker}>
+          <Text  style={styles.labelPicker}>Tema:</Text>
+          <Picker style={{ flex: 2}} 
+            selectedValue={this.state.theme}
+            onValueChange={this.onThemeChange}
+          >
+            <Picker.Item label="Azul" value="blue" />
+            <Picker.Item label="Rosa" value="pink" />
+            <Picker.Item label="Verde" value="green" />
+          </Picker>
         </View>
       </View>
     );
@@ -48,5 +72,15 @@ const styles = StyleSheet.create({
   labelNotification: {
     fontSize: 20,
     flex: 3
+  },
+  choosePicker: {
+    marginTop: 30,
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+  },
+  labelPicker: {
+    fontSize: 20,
+    flex: 1
   }
 });
