@@ -15,33 +15,31 @@ export default class App extends Component {
   }
 
   componentDidMount() {
-    
-    setTimeout(() => {
-      Promise.all([
-        fetchConfiguration('notifications'),
-        fetchConfiguration('theme')
-      ])
-      .then(values => {
+    fetchConfiguration('configurations').then(config => {
+      if (config !== null) {
+        const data = JSON.parse(config);
         const state = { loading: false };
-        if (values[0] !== null) {
-          state.notifications = values[0] === 'true'
+        if (config.notifications !== null) {
+          state.notifications = config.notifications === 'true'
         }
 
-        if (values[1] !== null) {
-          state.theme = values[1]
+        if (config.theme !== null) {
+          state.theme = config.theme
         }
-        
         this.setState(state)
-      })
-    }, 3000);
+      } else {
+        this.setState({ loading: false })
+      }
+    });
   }
 
   componentDidUpdate(prevProps, prevState) {
-    if (prevState.notifications !== this.state.notifications) {
-      saveConfiguration('notifications', this.state.notifications.toString());
-    }
-    if (prevState.theme !== this.state.theme) {
-      saveConfiguration('theme', this.state.theme);
+    if ((prevState.notifications !== this.state.notifications) || (prevState.theme !== this.state.theme)) {
+      const config = {
+        notifications: this.state.notifications.toString(),
+        theme: this.state.theme
+      }
+      saveConfiguration('configurations', JSON.stringify(config));
     }
   }
 
